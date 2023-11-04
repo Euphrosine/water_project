@@ -5,41 +5,38 @@ from .models import WaterData
 from django.contrib.auth.decorators import login_required
 
 def water_data_api(request):
-    # Assuming 'status' is passed in the request
-    status = request.GET.get('status', None)
+    # Assuming 'status' and 'ph_value' are passed in the request
+    ph_value = request.GET.get('ph_value', None)
 
-    if status is not None:
-        if status == '1':
-            status_type = "1"
+    if ph_value is not None:
+        ph_value = int(ph_value)  # Convert ph_value to a float
+
+        if ph_value > 30:
             quality = "Clean Water"
-        elif status == '2':
-            status_type = "2"
+        elif ph_value < 29:
             quality = "Unclean Water"
         else:
-            status_type = ""
-            quality = ""
+            quality = ""  # Set a default quality if neither condition is met
 
+        water_data = WaterData.objects.create(datetime=datetime.now(), ph_value=ph_value, quality=quality)
 
-        water_data = WaterData.objects.create(datetime=datetime.now(), status_type=status_type,quality=quality)
-        
-
-        return JsonResponse({'message': 'Data received successfully', 'context': {'status_type': status_type, 'quality': quality}})
+        return JsonResponse({'message': 'Data received successfully', 'context': {'ph_value': ph_value, 'quality': quality}})
     else:
-        return JsonResponse({'error': 'Invalid request. Status parameter is missing.'}, status=400)
+        return JsonResponse({'error': 'Invalid request. ph_value parameter is missing or not valid.'}, status=400)
 
 
 @login_required
 def water_data_view(request):
     latest_entry = WaterData.objects.latest('datetime')
-    status_type = latest_entry.status_type  # Corrected line
+    ph_value = latest_entry.ph_value  # Corrected line
     quality = latest_entry.quality  # Corrected line
 
-    return render(request, 'water_app/schair_data_view.html', {'status_type': status_type, 'quality': quality})
+    return render(request, 'water_app/schair_data_view.html', {'ph_value': ph_value, 'quality': quality})
 
 def update_data(request):
     latest_entry = WaterData.objects.latest('datetime')
-    status_type = latest_entry.status_type  # Corrected line
+    ph_value = latest_entry.ph_value  # Corrected line
     quality = latest_entry.quality  # Corrected line
 
-    return JsonResponse({'status_type': status_type, 'quality': quality})
+    return JsonResponse({'ph_value': ph_value, 'quality': quality})
 

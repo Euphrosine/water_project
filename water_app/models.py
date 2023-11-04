@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class WaterData(models.Model):
     datetime = models.DateTimeField()
-    status_type = models.CharField(max_length=100)
+    ph_value = models.IntegerField()
     quality = models.CharField(max_length=100)
 
 
