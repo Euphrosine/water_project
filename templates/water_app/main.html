@@ -7,17 +7,17 @@
 <!-- Display counts -->
 <div class="row">
     <div class="col-xl-6">
-        <div class="card" style="background-color: rgb(127, 143, 189); color: black;">
+        <div class="card" style="background-color: rgb(9, 21, 189); color: rgb(247, 241, 241);">
             <div class="card-body">
-                <h5 class="card-title">Total Clean Water</h5>
+                <h5 class="card-title" style="color: white;">Total Clean Water</h5>
                 <p class="card-text">{{ clean_water_count }}</p>
             </div>
         </div>
     </div>
     <div class="col-xl-6">
-        <div class="card" style="background-color: rgb(72, 103, 196); color: black;">
+        <div class="card" style="background-color: rgb(216, 13, 13); color: rgb(247, 241, 241);">
             <div class="card-body">
-                <h5 class="card-title">Total Unclean Water</h5>
+                <h5 class="card-title" style="color: white;">Total Unclean Water</h5>
                 <p class="card-text">{{ unclean_water_count }}</p>
             </div>
         </div>
@@ -50,7 +50,7 @@
                     {% if entry.result == "Clean" %}
                         <span style="color: rgb(9, 21, 189);">{{ entry.result }}</span>
                     {% else %}
-                        <span style="color: red;">{{ entry.result }}</span>
+                        <span style="color: rgb(216, 13, 13);">{{ entry.result }}</span>
                     {% endif %}  
                                       
                 </td>
@@ -76,8 +76,8 @@
             labels: ['Clean Water', 'Unclean Water'],
             datasets: [{
                 data: [cleanWaterCount, uncleanWaterCount],
-                backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
-                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                backgroundColor: ['rgb(9, 21, 189)', 'rgb(216, 13, 13)'],
+                borderColor: ['rgb(9, 21, 189)', 'rgb(216, 13, 13)'],
                 borderWidth: 1
             }]
         };
