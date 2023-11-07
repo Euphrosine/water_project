@@ -62,9 +62,7 @@ def water_data_view(request):
     clean_water_count = data.filter(result='Clean').count()
     unclean_water_count = data.filter(result='Unclean').count()
 
-    # Retrieve cleanliness data for the chart (clean_data and unclean_data)
-    # Calculate clean and unclean data
-    # clean_data, unclean_data = get_cleanliness_data()
+
 
     context = {
         'data': data,

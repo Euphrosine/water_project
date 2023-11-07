@@ -60,6 +60,50 @@
     </tbody>
   </table>
 </div>
+
+<h4 class="chart">Water Cleanliness Chart</h4>
+<canvas id="cleanlinessPieChart" width="900" height="400"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('cleanlinessPieChart').getContext('2d');
+
+        var cleanWaterCount = {{ clean_water_count }};
+        var uncleanWaterCount = {{ unclean_water_count }};
+
+        var data = {
+            labels: ['Clean Water', 'Unclean Water'],
+            datasets: [{
+                data: [cleanWaterCount, uncleanWaterCount],
+                backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                borderWidth: 1
+            }]
+        };
+
+        var options = {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Water Cleanliness Chart'
+                }
+            }
+        };
+
+        var chart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    });
+</script>
+
+
 <script>
         // Count total entries
         var entryCount = document.querySelectorAll('tbody tr').length;
