@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<br>
+<h4 id="latest_entry">Total Entries: <span id="entryCount"></span></h4>
+
+<!-- Display counts -->
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card" style="background-color: rgb(127, 143, 189); color: black;">
+            <div class="card-body">
+                <h5 class="card-title">Total Clean Water</h5>
+                <p class="card-text">{{ clean_water_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card" style="background-color: rgb(72, 103, 196); color: black;">
+            <div class="card-body">
+                <h5 class="card-title">Total Unclean Water</h5>
+                <p class="card-text">{{ unclean_water_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-5">
+  <h4 id="water_data">Water Data</h4>
+  <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>DateTime</th>
+            <th>Turbidity</th>
+            <th>pH Value</th>
+            <th>Turbidity Quality</th>
+            <th>pH Quality</th>
+            <th>Results</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in data %}
+            <tr id="row-{{ entry.id }}">
+                <td>{{ entry.datetime }}</td>
+                <td>{{ entry.turbidity_value }}</td>
+                <td>{{ entry.ph_value }}</td>
+                <td>{{ entry.turbidity_quality }}</td>
+                <td>{{ entry.ph_quality }}</td>
+                <td>
+                    {% if entry.result == "Clean" %}
+                        <span style="color: rgb(9, 21, 189);">{{ entry.result }}</span>
+                    {% else %}
+                        <span style="color: red;">{{ entry.result }}</span>
+                    {% endif %}  
+                                      
+                </td>
+            </tr>
+        {% endfor %}
+    
+    </tbody>
+  </table>
+</div>
+<script>
+        // Count total entries
+        var entryCount = document.querySelectorAll('tbody tr').length;
+        document.getElementById('entryCount').textContent = entryCount;
+        
+        // Count clean and unclean water entries
+        var cleanWaterCount = cleanData.reduce((total, item) => total + item.count, 0);
+        var uncleanWaterCount = uncleanData.reduce((total, item) => total + item.count, 0);
+        
+        document.getElementById('cleanWaterCount').textContent = cleanWaterCount;
+        document.getElementById('uncleanWaterCount').textContent = uncleanWaterCount;
+   
+
+</script>
+{% endblock %}

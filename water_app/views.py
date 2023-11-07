@@ -1,42 +1,76 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from datetime import datetime
 from .models import WaterData
-from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from django.db.models import Count
+import json
+
 
 def water_data_api(request):
-    # Assuming 'status' and 'ph_value' are passed in the request
+    turbidity_value = request.GET.get('turbidity_value', None)
     ph_value = request.GET.get('ph_value', None)
 
-    if ph_value is not None:
-        ph_value = int(ph_value)  # Convert ph_value to a float
+    if turbidity_value is not None and ph_value is not None:
+        turbidity_value = float(turbidity_value)
+        ph_value = float(ph_value)
 
-        if ph_value > 30:
-            quality = "Clean Water"
-        elif ph_value < 29:
-            quality = "Unclean Water"
+        turbidity_quality = None
+        ph_quality = None
+        result = None
+
+        if turbidity_value <= 5:
+            turbidity_quality = "Low"
+        elif 6 <= turbidity_value <= 25:
+            turbidity_quality = "Medium"
         else:
-            quality = ""  # Set a default quality if neither condition is met
+            turbidity_quality = "High"
 
-        water_data = WaterData.objects.create(datetime=datetime.now(), ph_value=ph_value, quality=quality)
+        if 0 <= ph_value <= 6:
+            ph_quality = "Alkalinity"
+        elif ph_value == 7:
+            ph_quality = "Neutral"
+        else:
+            ph_quality = "Acidic"
 
-        return JsonResponse({'message': 'Data received successfully', 'context': {'ph_value': ph_value, 'quality': quality}})
+        if turbidity_quality == "Low" and  (ph_quality == "Alkalinity" or ph_quality == "Neutral"):
+            result = "Clean"
+        else:
+            result = "Unclean"
+        
+        print(f"Result: {result}")
+        water_data = WaterData.objects.create(
+            datetime=datetime.now(),
+            turbidity_value=turbidity_value,
+            turbidity_quality=turbidity_quality,
+            ph_value=ph_value,
+            ph_quality=ph_quality,
+            result=result
+        )
+
+
+        return JsonResponse({'message': 'Data received successfully', 'context': {'ph_value': ph_value, 'turbidity_value': turbidity_value, 'turbidity_quality': turbidity_quality, 'ph_quality': ph_quality, 'result': result}})
     else:
-        return JsonResponse({'error': 'Invalid request. ph_value parameter is missing or not valid.'}, status=400)
+        return JsonResponse({'error': 'Invalid request. turbidity_value or ph_value parameter is missing or not valid.'}, status=400)
 
 
-@login_required
+
 def water_data_view(request):
-    latest_entry = WaterData.objects.latest('datetime')
-    ph_value = latest_entry.ph_value  # Corrected line
-    quality = latest_entry.quality  # Corrected line
+    # Retrieve the necessary data from the database
+    data = WaterData.objects.all()
 
-    return render(request, 'water_app/schair_data_view.html', {'ph_value': ph_value, 'quality': quality})
+    # Calculate counts of clean and unclean water entries
+    clean_water_count = data.filter(result='Clean').count()
+    unclean_water_count = data.filter(result='Unclean').count()
 
-def update_data(request):
-    latest_entry = WaterData.objects.latest('datetime')
-    ph_value = latest_entry.ph_value  # Corrected line
-    quality = latest_entry.quality  # Corrected line
+    # Retrieve cleanliness data for the chart (clean_data and unclean_data)
+    # Calculate clean and unclean data
+    # clean_data, unclean_data = get_cleanliness_data()
 
-    return JsonResponse({'ph_value': ph_value, 'quality': quality})
+    context = {
+        'data': data,
+        'clean_water_count': clean_water_count,
+        'unclean_water_count': unclean_water_count,
 
+    }
+
+    return render(request, 'water_app/main.html', context)
