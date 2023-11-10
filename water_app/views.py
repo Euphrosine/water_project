@@ -57,6 +57,7 @@ def water_data_api(request):
 def water_data_view(request):
     # Retrieve the necessary data from the database
     data = WaterData.objects.all()
+   
 
     # Calculate counts of clean and unclean water entries
     clean_water_count = data.filter(result='Clean').count()
@@ -72,3 +73,8 @@ def water_data_view(request):
     }
 
     return render(request, 'water_app/main.html', context)
+
+# chart2
+def chart_data(request):
+    data = WaterData.objects.values('datetime', 'turbidity_value', 'ph_value')
+    return JsonResponse(list(data), safe=False)

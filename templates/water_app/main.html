@@ -26,20 +26,20 @@
 
 
 <div class="container mt-5">
-  <h4 id="water_data">Water Data</h4>
-  <table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>DateTime</th>
-            <th>Turbidity</th>
-            <th>pH Value</th>
-            <th>Turbidity Quality</th>
-            <th>pH Quality</th>
-            <th>Results</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for entry in data %}
+    <h4 id="water_data">Water Data</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>DateTime</th>
+                <th>Turbidity</th>
+                <th>pH Value</th>
+                <th>Turbidity Quality</th>
+                <th>pH Quality</th>
+                <th>Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data %}
             <tr id="row-{{ entry.id }}">
                 <td>{{ entry.datetime }}</td>
                 <td>{{ entry.turbidity_value }}</td>
@@ -48,21 +48,28 @@
                 <td>{{ entry.ph_quality }}</td>
                 <td>
                     {% if entry.result == "Clean" %}
-                        <span style="color: rgb(9, 21, 189);">{{ entry.result }}</span>
+                    <span style="color: rgb(9, 21, 189);">{{ entry.result }}</span>
                     {% else %}
-                        <span style="color: rgb(216, 13, 13);">{{ entry.result }}</span>
-                    {% endif %}  
-                                      
+                    <span style="color: rgb(216, 13, 13);">{{ entry.result }}</span>
+                    {% endif %}
+
                 </td>
             </tr>
-        {% endfor %}
-    
-    </tbody>
-  </table>
+            {% endfor %}
+
+        </tbody>
+    </table>
 </div>
 <br>
-<h4 class="chart">Water Cleanliness Chart</h4>
-<canvas id="cleanlinessPieChart" width="900" height="400"></canvas>
+
+</div>
+
+
+<h4 id="water_chart">Turbidity and PH </h4>
+{% include 'water_app/chart2.html' %}
+
+<h4 id="water_chart2">Cleanliness Chart</h4>
+<canvas id="cleanlinessPieChart" width="400" height="200"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -104,18 +111,19 @@
 </script>
 
 
+
 <script>
-        // Count total entries
-        var entryCount = document.querySelectorAll('tbody tr').length;
-        document.getElementById('entryCount').textContent = entryCount;
-        
-        // Count clean and unclean water entries
-        var cleanWaterCount = cleanData.reduce((total, item) => total + item.count, 0);
-        var uncleanWaterCount = uncleanData.reduce((total, item) => total + item.count, 0);
-        
-        document.getElementById('cleanWaterCount').textContent = cleanWaterCount;
-        document.getElementById('uncleanWaterCount').textContent = uncleanWaterCount;
-   
+    // Count total entries
+    var entryCount = document.querySelectorAll('tbody tr').length;
+    document.getElementById('entryCount').textContent = entryCount;
+
+    // Count clean and unclean water entries
+    var cleanWaterCount = cleanData.reduce((total, item) => total + item.count, 0);
+    var uncleanWaterCount = uncleanData.reduce((total, item) => total + item.count, 0);
+
+    document.getElementById('cleanWaterCount').textContent = cleanWaterCount;
+    document.getElementById('uncleanWaterCount').textContent = uncleanWaterCount;
+
 
 </script>
 {% endblock %}

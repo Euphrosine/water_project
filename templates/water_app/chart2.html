@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- template.html -->
+
+<canvas id="waterChart" width="400" height="200"></canvas>
+
+<script>
+  // JavaScript code for fetching data and rendering the chart
+  // Use AJAX to fetch data from the Django view
+  fetch('/chart_data/')
+    .then(response => response.json())
+    .then(data => {
+      renderChart(data);
+    });
+
+  function renderChart(data) {
+    // Extract datetime, turbidity, and pH values from the data
+    const labels = data.map(entry => entry.datetime);
+    const turbidityValues = data.map(entry => entry.turbidity_value);
+    const pHValues = data.map(entry => entry.ph_value);
+
+    // Chart.js configuration
+    const ctx = document.getElementById('waterChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Turbidity',
+            borderColor: 'rgb(75, 192, 192)',
+            data: turbidityValues,
+            yAxisID: 'y-axis-1',
+          },
+          {
+            label: 'pH',
+            borderColor: 'rgb(255, 99, 132)',
+            data: pHValues,
+            yAxisID: 'y-axis-2',
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              id: 'y-axis-1',
+              type: 'linear',
+              position: 'left',
+            },
+            {
+              id: 'y-axis-2',
+              type: 'linear',
+              position: 'right',
+            },
+          ],
+        },
+      },
+    });
+  }
+</script>
+</div>
+{% endblock %}
