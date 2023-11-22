@@ -12,6 +12,7 @@
             <th>pH Value</th>
             <th>Turbidity</th>
             <th>Quality</th>
+            <th>Water Taps</th>
         </tr>
         {% for data in water_data %}
             <tr>
@@ -20,6 +21,7 @@
                 <td>{{ data.ph_value }}</td>
                 <td>{{ data.turbidity }}</td>
                 <td>{{ data.quality }}</td>
+                <td>{{ data.water_tap }}</td>
             </tr>
         {% endfor %}
     </table>

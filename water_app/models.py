@@ -2,6 +2,7 @@ from django.db import models
 
 class WaterData(models.Model):
     datetime = models.DateTimeField()
+    water_tap = models.CharField(max_length=20)
     turbidity_value = models.FloatField()
     turbidity_quality = models.CharField(max_length=20)
     ph_value = models.FloatField()

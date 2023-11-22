@@ -1,9 +1,88 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<!-- template.html -->
+<div style="display: flex; justify-content: space-between; width: 100%;">
+  <canvas id="turbidityChart" style="flex: 1; max-width: 48%;" height="400"></canvas>
+  <canvas id="phChart" style="flex: 1; max-width: 48%;" height="400"></canvas>
+</div>
 
+<script>
+  // JavaScript code for fetching data and rendering the charts
+  // Use AJAX to fetch data from the Django view
+  fetch('/chart_data/')
+    .then(response => response.json())
+    .then(data => {
+      renderTurbidityChart(data);
+      renderPhChart(data);
+    });
+
+  function renderTurbidityChart(data) {
+    // Extract datetime and turbidity values from the data
+    const labels = data.map(entry => entry.datetime);
+    const turbidityValues = data.map(entry => entry.turbidity_value);
+
+    // Chart.js configuration for turbidity
+    const ctx = document.getElementById('turbidityChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Turbidity',
+            borderColor: 'rgb(75, 192, 192)',
+            data: turbidityValues,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              type: 'linear',
+              position: 'left',
+            },
+          ],
+        },
+      },
+    });
+  }
+
+  function renderPhChart(data) {
+    // Extract datetime and pH values from the data
+    const labels = data.map(entry => entry.datetime);
+    const pHValues = data.map(entry => entry.ph_value);
+
+    // Chart.js configuration for pH
+    const ctx = document.getElementById('phChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'pH',
+            borderColor: 'rgb(255, 99, 132)',
+            data: pHValues,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              type: 'linear',
+              position: 'left',
+            },
+          ],
+        },
+      },
+    });
+  }
+</script>
+<h4>PH and Turbidity Chart</h4>
+<div style="display: flex; justify-content: space-between; width: 100%;">
 <canvas id="waterChart" width="400" height="200"></canvas>
+</div>
 
 <script>
   // JavaScript code for fetching data and rendering the chart
