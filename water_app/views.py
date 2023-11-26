@@ -10,6 +10,11 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from .models import WaterData
 
+
+from django.http import JsonResponse
+from datetime import datetime  # Add this import if not already imported
+from .models import WaterData  # Import the WaterData model from your app
+
 def water_data_api(request):
     turbidity_value = request.GET.get('turbidity_value', None)
     ph_value = request.GET.get('ph_value', None)
@@ -23,12 +28,12 @@ def water_data_api(request):
         ph_quality = None
         result = None
 
-        if turbidity_value <= 5:
+        if turbidity_value == 1:
             turbidity_quality = "Low"
-        elif 6 <= turbidity_value <= 25:
-            turbidity_quality = "Medium"
-        else:
+        elif turbidity_value == 0:
             turbidity_quality = "High"
+        else:
+            turbidity_quality = "Invalid input"
 
         if 0 <= ph_value <= 6:
             ph_quality = "Alkalinity"
@@ -37,12 +42,10 @@ def water_data_api(request):
         else:
             ph_quality = "Acidic"
 
-        if turbidity_quality == "Low" and (ph_quality == "Alkalinity" or ph_quality == "Neutral"):
+        if turbidity_quality == "Low":
             result = "Clean"
         else:
             result = "Unclean"
-
-        print(f"Result: {result}")
 
         # Include water_tap in WaterData creation
         water_data = WaterData.objects.create(
@@ -58,6 +61,7 @@ def water_data_api(request):
         return JsonResponse({'message': 'Data received successfully', 'result': result})
     else:
         return JsonResponse({'error': 'Invalid request. Required parameters are missing.'}, status=400)
+
 
 
 @login_required
