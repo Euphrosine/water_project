@@ -28,9 +28,9 @@ def water_data_api(request):
         ph_quality = None
         result = None
 
-        if turbidity_value == 1:
+        if turbidity_value < 6:
             turbidity_quality = "Low"
-        elif turbidity_value == 0:
+        elif turbidity_value > 6:
             turbidity_quality = "High"
         else:
             turbidity_quality = "Invalid input"
@@ -42,7 +42,7 @@ def water_data_api(request):
         else:
             ph_quality = "Acidic"
 
-        if turbidity_quality == "Low":
+        if turbidity_quality == "Low" and ph_value == 7:
             result = "Clean"
         else:
             result = "Unclean"

@@ -11,9 +11,9 @@ class WaterData(models.Model):
 
     def save(self, *args, **kwargs):
         # Determine turbidity quality
-        if self.turbidity_value == 1:
+        if self.turbidity_value < 6:
             self.turbidity_quality = "Low"
-        elif self.turbidity_value == 0:
+        elif self.turbidity_value > 6:
             self.turbidity_quality = "High"
         else:
             self.turbidity_quality = "Invalid input"
@@ -26,7 +26,7 @@ class WaterData(models.Model):
             self.ph_quality = "Acidic"
 
         # Determine overall result
-        if self.turbidity_quality == "Low":
+        if self.turbidity_quality == "Low" and self.ph_value == 7 :
             self.result = "Clean"
         else:
             self.result = "Unclean"
