@@ -26,7 +26,7 @@ class WaterData(models.Model):
             self.ph_quality = "Acidic"
 
         # Determine overall result
-        if self.turbidity_quality == "Low" and self.ph_value == 7 :
+        if self.turbidity_quality == "Low" and 7.9 >= self.ph_value >= 6.1 :
             self.result = "Clean"
         else:
             self.result = "Unclean"

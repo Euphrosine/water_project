@@ -42,7 +42,7 @@ def water_data_api(request):
         else:
             ph_quality = "Acidic"
 
-        if turbidity_quality == "Low" and ph_value == 7:
+        if turbidity_quality == "Low" and 7.9 >= ph_value >= 6.1:
             result = "Clean"
         else:
             result = "Unclean"
