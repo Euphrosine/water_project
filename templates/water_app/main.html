@@ -17,7 +17,7 @@
     <div class="col-xl-6">
         <div class="card" style="background-color: rgb(216, 13, 13); color: rgb(247, 241, 241);">
             <div class="card-body">
-                <h5 class="card-title" style="color: white;">Total Unclean Water</h5>
+                <h5 class="card-title" style="color: white;">Total Dirty Water</h5>
                 <p class="card-text">{{ unclean_water_count }}</p>
             </div>
         </div>
@@ -80,7 +80,7 @@
         var uncleanWaterCount = {{ unclean_water_count }};
 
         var data = {
-            labels: ['Clean Water', 'Unclean Water'],
+            labels: ['Clean Water', 'Dirty Water'],
             datasets: [{
                 data: [cleanWaterCount, uncleanWaterCount],
                 backgroundColor: ['rgb(9, 21, 189)', 'rgb(216, 13, 13)'],
