@@ -95,3 +95,57 @@ from django.shortcuts import render
 def taps_table(request):
     table_data = WaterData.objects.all()
     return render(request, 'water_app/water-taps.html', {'table_data':table_data})
+
+
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+
+def generate_pdf_report(request):
+    # Assuming you have Django models for each category
+    weather_data = WaterData.objects.all()
+
+    # Create a PDF document
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="System_report.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+
+    def draw_section(title, data, y_start):
+        p.setFont("Helvetica-Bold", 18)
+        p.drawCentredString(300, y_start, title)
+
+        p.setFont("Helvetica", 12)
+        p.drawCentredString(300, y_start - 20, "-" * 50)
+
+        records_per_page = 25
+        for i, item in enumerate(data):
+            # Calculate the starting y coordinate for each record
+            record_y_start = y_start - 40 - (i % records_per_page) * 20
+
+            # Start a new page for each section or after 25 records
+            if i % records_per_page == 0 and i != 0:
+                p.showPage()
+                p.setFont("Helvetica-Bold", 18)
+                p.drawCentredString(300, 770, f"{title} (continued)")
+                p.setFont("Helvetica", 12)
+                y_start = 780  # Reset y_start for the new page
+
+            p.drawString(70, record_y_start, f"Record {i + 1}: {item.datetime}, {item.water_tap}, {item.turbidity_value}, {item.turbidity_quality}, {item.ph_value}, {item.ph_quality}, {item.ph_result}")
+
+    # Set an initial y_start value
+    draw_section("Smart Water Monitoring System for Community Water Wells", weather_data, 770)
+
+    # Save the PDF
+    p.showPage()
+    p.save()
+
+    return response
+
+
+
+
+
+def generate_chart_data_report_view(request):
+    sensor_data = WaterData.objects.all()
+    pdf_response = generate_pdf_report(sensor_data)
+    return pdf_response
