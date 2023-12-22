@@ -45,7 +45,7 @@ def water_data_api(request):
         if turbidity_quality == "Low" and 7.9 >= ph_value >= 6.1:
             result = "Clean"
         else:
-            result = "Unclean"
+            result = "Dirty"
 
         # Include water_tap in WaterData creation
         water_data = WaterData.objects.create(
@@ -72,7 +72,7 @@ def water_data_view(request):
 
     # Calculate counts of clean and unclean water entries
     clean_water_count = data.filter(result='Clean').count()
-    unclean_water_count = data.filter(result='Unclean').count()
+    unclean_water_count = data.filter(result='Dirty').count()
 
 
 
