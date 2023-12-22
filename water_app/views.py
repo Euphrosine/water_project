@@ -130,7 +130,7 @@ def generate_pdf_report(request):
                 p.setFont("Helvetica", 12)
                 y_start = 780  # Reset y_start for the new page
 
-            p.drawString(70, record_y_start, f"Record {i + 1}: {item.datetime}, {item.water_tap}, {item.turbidity_value}, {item.turbidity_quality}, {item.ph_value}, {item.ph_quality}, {item.ph_result}")
+            p.drawString(70, record_y_start, f"Record {i + 1}: {item.datetime}, {item.water_tap}, {item.turbidity_value}, {item.turbidity_quality}, {item.ph_value}, {item.ph_quality}, {item.result}")
 
     # Set an initial y_start value
     draw_section("Smart Water Monitoring System for Community Water Wells", weather_data, 770)
