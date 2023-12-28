@@ -28,7 +28,7 @@
         labels: labels,
         datasets: [
           {
-            label: 'Turbidity',
+            label: 'Turbidity & pH',
             borderColor: 'rgb(75, 192, 192)',
             data: turbidityValues,
           },
@@ -36,12 +36,22 @@
       },
       options: {
         scales: {
-          yAxes: [
-            {
-              type: 'linear',
-              position: 'left',
-            },
-          ],
+          x: {
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            }
+          },
+          y: {
+            type: 'linear',
+            position: 'left',
+            scaleLabel: {
+              display: true,
+              labelString: 'Turbidity & pH'
+            }
+          },
         },
       },
     });
@@ -68,12 +78,22 @@
       },
       options: {
         scales: {
-          yAxes: [
-            {
-              type: 'linear',
-              position: 'left',
-            },
-          ],
+          x: {
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            }
+          },
+          y: {
+            type: 'linear',
+            position: 'left',
+            scaleLabel: {
+              display: true,
+              labelString: 'Turbidity & pH'
+            }
+          },
         },
       },
     });
@@ -122,16 +142,32 @@
       },
       options: {
         scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom',
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            }
+          },
           yAxes: [
             {
               id: 'y-axis-1',
               type: 'linear',
               position: 'left',
+              scaleLabel: {
+                display: true,
+                labelString: 'Turbidity'
+              }
             },
             {
               id: 'y-axis-2',
               type: 'linear',
               position: 'right',
+              scaleLabel: {
+                display: true,
+                labelString: 'pH'
+              }
             },
           ],
         },
