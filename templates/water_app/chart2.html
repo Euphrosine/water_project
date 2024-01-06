@@ -36,22 +36,12 @@
       },
       options: {
         scales: {
-          x: {
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              display: true,
-              labelString: 'Date & Time'
-            }
-          },
-          y: {
-            type: 'linear',
-            position: 'left',
-            scaleLabel: {
-              display: true,
-              labelString: 'Turbidity'
-            }
-          },
+          yAxes: [
+            {
+              type: 'linear',
+              position: 'left',
+            },
+          ],
         },
       },
     });
@@ -78,31 +68,20 @@
       },
       options: {
         scales: {
-          x: {
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              display: true,
-              labelString: 'Date & Time'
-            }
-          },
-          y: {
-            type: 'linear',
-            position: 'left',
-            scaleLabel: {
-              display: true,
-              labelString: 'Turbidity'
-            }
-          },
+          yAxes: [
+            {
+              type: 'linear',
+              position: 'left',
+            },
+          ],
         },
       },
     });
   }
 </script>
-
 <h4>PH and Turbidity Chart</h4>
 <div style="display: flex; justify-content: space-between; width: 100%;">
-  <canvas id="waterChart" width="400" height="200"></canvas>
+<canvas id="waterChart" width="400" height="200"></canvas>
 </div>
 
 <script>
@@ -143,32 +122,16 @@
       },
       options: {
         scales: {
-          x: {
-            type: 'linear',
-            position: 'bottom',
-            scaleLabel: {
-              display: true,
-              labelString: 'Date & Time'
-            }
-          },
           yAxes: [
             {
               id: 'y-axis-1',
               type: 'linear',
               position: 'left',
-              scaleLabel: {
-                display: true,
-                labelString: 'Turbidity'
-              }
             },
             {
               id: 'y-axis-2',
               type: 'linear',
               position: 'right',
-              scaleLabel: {
-                display: true,
-                labelString: 'pH'
-              }
             },
           ],
         },
@@ -178,3 +141,4 @@
 </script>
 </div>
 {% endblock %}
+
